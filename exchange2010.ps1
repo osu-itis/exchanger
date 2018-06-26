@@ -61,11 +61,6 @@ $fileSSRT = @{'filename'='SpeechPlatformRuntime.msi';
 
 Function InstallApp($app)
 {
-    if (!($installedUpdates))
-    {
-        Write-Host 'Loading list of installed hotfixes...'
-        $script:installedUpdates = Get-WmiObject win32_quickfixengineering
-    }
     switch ($app)
     {
         'NET35'
