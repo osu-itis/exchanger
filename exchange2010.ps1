@@ -30,16 +30,6 @@ else
 }
 
 #Region Installation files and properties
-$fileNET35 = @{'filename'='dotnetfx35.exe';
-    'shortname'='.NET 3.5';
-    'displayname'='.NET 3.5 SP1';
-    'url'='http://download.microsoft.com/download/2/0/E/20E90413-712F-438C-988E-FDAA79A8AC3D/dotnetfx35.exe';
-    'size'='235MB'}
-$fileNET35HF = @{'filename'='NDP35SP1-KB958484-x64.exe';
-    'shortname'='.NET 3.5 hotfix';
-    'displayname'='.NET 3.5 hotfix';
-    'url'='http://download.microsoft.com/download/B/4/2/B42197BD-AEE1-4FE6-8CB3-29D60D0C3727/NDP35SP1-KB958484-x64.exe';
-    'size'='1.4MB'}
 #This is the SP1 version of the filter pack, but there are no changes in SP1 that impact Exchange,
 #so the RTM version is also sufficient.
 $fileOFP = @{'filename'='2010FilterPack64bit.exe';
@@ -63,16 +53,6 @@ Function InstallApp($app)
 {
     switch ($app)
     {
-        'NET35'
-            {
-            $appArray = $fileNET35
-            $checkExpression = "test-path 'HKLM:Software\Microsoft\NET Framework Setup\NDP\v3.5'"
-            }
-        'NET35HF'
-            {
-            $appArray = $fileNET35HF
-            $checkExpression = "test-path 'HKLM:SOFTWARE\Wow6432Node\Microsoft\Updates\Microsoft .NET Framework 3.5 SP1\SP1\KB958484'"
-            }
         'OFP'
             {
             $appArray = $fileOFP
@@ -142,19 +122,10 @@ Function InstallApp($app)
     }
 
     #Install app: Run installation.
-    if ($app -eq 'NET35HF')
-        { $arguments = '/passive /norestart' }
-    else
-        { $arguments = '/quiet /norestart' }
+    $arguments = '/quiet /norestart'
     $process = [System.Diagnostics.Process]::Start($fullPath,$arguments)
     $process.WaitForExit()
     Write-Host "$($appArray.displayname) installation complete." -ForegroundColor Green
-}
-
-Function InstallNET35()
-{
-    InstallApp 'NET35'
-    InstallApp 'NET35HF'
 }
 
 Function SetTCPSharing()
@@ -250,45 +221,44 @@ $opt = Read-Host 'Select an option.. ? '
 switch ($opt)
 {
     1{
-        InstallNET35; InstallApp 'OFP'; EnableFirewall; EnableRemoting
+        InstallApp 'OFP'; EnableFirewall; EnableRemoting
         Write-Host 'Beginning Windows components installation...'
         Invoke-Expression $ht
         }
     2{
-        InstallNET35; EnableFirewall; EnableRemoting
+        EnableFirewall; EnableRemoting
         Write-Host 'Beginning Windows components installation...'
         Invoke-Expression $cas
         SetTCPSharing
         }
     3{
-        InstallNET35; InstallApp 'OFP'; EnableFirewall; EnableRemoting
+        InstallApp 'OFP'; EnableFirewall; EnableRemoting
         Write-Host 'Beginning Windows components installation...'
         Invoke-Expression $mbx
         }
     4{
-        InstallNET35; InstallApp 'UCMA'; InstallApp 'SSRT'; EnableRemoting; EnableFirewall
+        InstallApp 'UCMA'; InstallApp 'SSRT'; EnableRemoting; EnableFirewall
         Write-Host 'Beginning Windows components installation...'
         Invoke-Expression $um
         }
     5{
-        InstallNET35; EnableFirewall
+        EnableFirewall
         Write-Host 'Beginning Windows components installation...'
         Invoke-Expression $edge
         }
     6{
-        InstallNET35; InstallApp 'OFP'; EnableFirewall; EnableRemoting
+        InstallApp 'OFP'; EnableFirewall; EnableRemoting
         Write-Host 'Beginning Windows components installation...'
         Invoke-Expression $typical
         SetTCPSharing
         }
     7{
-        InstallNET35; InstallApp 'OFP'; EnableFirewall; EnableRemoting
+        InstallApp 'OFP'; EnableFirewall; EnableRemoting
         Write-Host 'Beginning Windows components installation...'
         Invoke-Expression $cas
         SetTCPSharing
         }
     8{
-        InstallNET35
         Write-Host 'Beginning Windows components installation...'
         Invoke-Expression $tools
         }
