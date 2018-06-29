@@ -16,7 +16,7 @@ if ($prepare -eq $true)
 {
     # Prepare
     Write-Host 'Prepare AD: ' -NoNewline
-    $exp = Start-Process "$filepath\setup.com" -ArgumentList '/p' -wait -NoNewWindow -PassThru
+    $exp = Start-Process "$filepath\setup.com" -ArgumentList @('/p', '/on:"Contoso"') -wait -NoNewWindow -PassThru
     if($exp.ExitCode -ne 0) {
         Write-Host 'FAIL' -ForegroundColor Red -BackgroundColor Black
         break
@@ -37,7 +37,7 @@ if ($prepare -eq $true)
 {
     # Prepare SP3
     Write-Host 'Prepare SP3: ' -NoNewline
-    $exp3 = Start-Process "$filepath\sp3\setup.com" -ArgumentList '/p' -wait -NoNewWindow -PassThru
+    $exp3 = Start-Process "$filepath\sp3\setup.com" -ArgumentList @('/p', '/on:"Contoso"' -wait -NoNewWindow -PassThru
     if($exp3.ExitCode -ne 0) {
         Write-Host 'FAIL' -ForegroundColor Red -BackgroundColor Black
         break
