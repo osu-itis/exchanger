@@ -21,8 +21,8 @@ if ($prepare -eq $true)
         Write-Host 'FAIL' -ForegroundColor Red -BackgroundColor Black
         break
     }
+    else { Write-Host 'OK' }
 }
-else { Write-Host 'OK' }
 
 # Install
 Write-Host 'Install Exchange 2010 CAS, Tools: ' -NoNewline
@@ -42,8 +42,8 @@ if ($prepare -eq $true)
         Write-Host 'FAIL' -ForegroundColor Red -BackgroundColor Black
         break
     }
+    else { Write-Host 'OK' }
 }
-else { Write-Host 'OK' }
 
 # Install SP3
 Write-Host 'Install SP3: ' -NoNewline
@@ -57,7 +57,7 @@ else { Write-Host 'OK' }
 # Install CU20
 Write-Host 'Install CU20: ' -NoNewline
 $cup = Start-Process C:\Windows\System32\msiexec.exe -ArgumentList @("/p $filepath\Exchange2010-KB4073537-x64-en.msp", "/passive") -wait -NoNewWindow -PassThru
-if($cup.ExitCode -ne 0) {
+if(($cup.ExitCode -ne 0) -Or ($cup.ExitCode -ne 1641) -Or ($cup.ExitCode -ne 3010)) {
     Write-Host 'FAIL' -ForegroundColor Red -BackgroundColor Black
     break
 }
