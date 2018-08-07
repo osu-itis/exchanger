@@ -67,7 +67,7 @@ else { Write-Host 'OK' }
 Write-Host 'Enabling MRSProxy: ' -NoNewline
 Set-WebServicesVirtualDirectory -Identity "EWS (Default Web Site)" -MRSProxyEnabled $true
 
-$mrs = Get-WebServicesVirtualDirectory -Identity "EWS (Default Web Site)"
+$mrs = Get-WebServicesVirtualDirectory -Identity "EWS (Default Web Site)" -MRSMaxConnections 20
 if($mrs.MRSProxyEnabled -eq $true) { Write-Host 'OK' }
 else {
     Write-Host 'FAIL'
